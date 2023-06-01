@@ -1,0 +1,92 @@
+package GETTCAR
+public
+
+system RideSharingSystem
+	 features
+      RideRequestID: in data port;
+      PickUpLocation: in data port;
+      DropOffLocation: in data port;
+      PassengerID: in data port;
+
+     
+      DriverID: in data port;
+      EstimatedArrivalTime: out data port;
+      FareEstimate: out data port;
+end RideSharingSystem;
+
+system implementation RideSharingSystem
+	
+	subcomponents	
+			MA: system GETTCAR :: RideSharingSystem;
+			
+		connections
+			conn1: port RequestARide.RideRequestID -> Matching.RideRequestID;
+			conn2: port RequestARide.PickUpLocation -> Matching.GETTCAR;
+	        conn3: port RequestARide.DropOffLocation -> Matching.DropOffLocation;
+	        conn4: port Matching.MatchedDriverID ->Monitoring.DriverID;
+	        conn5: port Matching.MatchedDriverID -> RideSharingSystem.DriverID;
+            conn6: port RequestARide.PassengerID -> RideSharingSystem.PassengerID;
+            conn7: port RequestARide.RideRequestID -> RideSharingSystem.RideRequestID;
+            conn8: port RequestARide.PickUpLocation -> RideSharingSystem.PickUpLocation;
+            conn9: port RequestARide.DropOffLocation -> RideSharingSystem.DropOffLocation;
+
+end RideSharingSystem;
+
+
+system  RequestARide
+	 features
+      RideRequestID: in data port;
+      PickUpLocation: in data port;
+      DropOffLocation: in data port;
+      PassengerID: in data port;
+      
+     
+end RequestARide;
+
+
+system MatchingDriverPassenger
+	features
+      RideRequestID: in data port;
+      PickUpLocation: in data port;
+      DropOffLocation: in data port;
+end MatchingDriverPassenger;
+
+
+system Monitoring
+	features 
+		DriverID: in data port;
+end Monitoring;
+
+
+system FeeEstimation
+	
+	features
+	  PickUpLocation: in data port;
+      DropOffLocation: in data port;
+      
+end Feeestimation;
+
+
+system Payment
+	features
+		FareEstimate: out data port;
+
+		PaymentStatus: out data port;
+		PassengerID: in data port;
+		Payment_new_feature: in feature;
+end Payment;
+
+system Rating
+	features
+	   PassengerID: in data port;
+       DriverID: in data port;
+end Rating;
+
+
+system Safety
+	features
+	   PassengerID: in data port;
+end Safety;
+
+
+end GETTCAR;
